@@ -1,7 +1,7 @@
 # Django installation
 > python3 -m venv venv
-> . venv/bin/activate
 > python3 -m pip install pip setuptools wheel --upgrade
+> . venv/bin/activate
 > pip install django
 
 

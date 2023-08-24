@@ -3,7 +3,7 @@
 > python3 -m pip install pip setuptools wheel --upgrade
 > . venv/bin/activate
 > pip install django
-
+> criar arquivo de debugger
 
 # Django commands
 > check

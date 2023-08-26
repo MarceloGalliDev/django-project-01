@@ -34,3 +34,13 @@
 
 # Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
+
+# Jinja do Django
+- Quando fazemos um for dentro de uma página que renderiza outro template esse template recebe como parametro os dados contidos no for.
+
+# Filtros do Django para Jinja
+- Verifique a documentação
+- usamos pipe ('|') dentro das {{ }} para indicar o uso de filtros
+
+# Atualizando cache página
+- cmd + Shift + R

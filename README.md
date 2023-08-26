@@ -31,3 +31,6 @@
 > startproject = iniciando projeto
 > test
 > testserver
+
+# Arquivos Statics
+- Nos arquivos HTML usamos a tag load static

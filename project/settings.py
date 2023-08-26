@@ -120,10 +120,13 @@ USE_TZ = True
 # Incluir a barra antes do 'static/'
 STATIC_URL = '/static/'
 
-# Aqui incluimos o caminho do global static para o Django
+# Aqui incluimos o caminho do global static para o Django é uma lista logo pode ter mais de uma pasta
 STATICFILES_DIRS = [
     BASE_DIR / 'base_static',
 ]
+
+# Usado para pasta destino do collectstatic do Django
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

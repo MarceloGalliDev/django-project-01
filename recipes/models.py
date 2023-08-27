@@ -27,9 +27,9 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
     # especificamos o caminho que vamos receber a imagem, criando as pastas dinamicamente por data
-    cover = models.ImageField(upload_to='recipes/covers/%Y/%m/%d/')
-    # na foreignKey especificamos que quando deletar setamos como null
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    cover = models.ImageField(upload_to='recipes/covers/%Y/%m/%d/', blank=True, default='')
+    # na foreignKey especificamos que quando deletar setamos como null(null = None)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     # esse campo puxamos diretamente do models User padrão do Django
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 

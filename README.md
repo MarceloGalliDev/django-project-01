@@ -44,3 +44,19 @@
 
 # Atualizando cache página
 - cmd + Shift + R
+
+# Usando Shell do Django
+- python manage.py shell
+    - aqui posso verificar comandos de query entre outros.
+- comandos shell
+    = para eu ver os campos disponíveis
+        - recipe._meta.get_fields()
+    = para ver um indice especifico
+        - recipe._meta.get_fields()[0]
+    = para ver o nome do campo
+        - recipe._meta.get_fields()[0].name
+    = para ver o valor dentro do campo
+        - getattr(recipe._meta.get_fields()[0])
+        - recipe.id
+    = para selecionar um objeto direto
+        - categories = Category.objects.get(id=1)

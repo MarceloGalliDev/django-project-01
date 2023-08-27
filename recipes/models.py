@@ -6,6 +6,10 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
+    
+    # aqui é usado para página de admin
+    def __str__(self):
+        return self.name
 
 
 class Recipe(models.Model):
@@ -28,3 +32,6 @@ class Recipe(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     # esse campo puxamos diretamente do models User padrão do Django
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.title

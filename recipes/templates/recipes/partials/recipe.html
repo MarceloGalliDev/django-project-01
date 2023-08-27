@@ -35,7 +35,7 @@
             {{ recipe.created_at|date:"d/m/Y" }} às {{ recipe.created_at|date:"H:i" }}
         </span>
 
-        {% if recipe.gategory is not None %}
+        {% if recipe.category_id is not None %}
             <span class="recipe-author-item">
                 <a href="{% url 'recipes:category' recipe.category.id %}">
                     <i class="fas fa-layer-group"></i>
@@ -43,7 +43,6 @@
                 </a>
             </span>
         {% endif %}
-
 
     </div>
 
@@ -75,11 +74,16 @@
     </footer>
     {% endif %}
 
-
     {% if is_detail_page is True %}
-    <div class="preparation-steps">
-        <p>{{ recipe.preparation_steps|linebreaksbr }}</p>
-    </div>
+        <div class="preparation-steps">
+            {% if recipe.preparation_steps_is_html is True %}
+                <!-- o safe aqui é para indicar ao Django que o HTML vindo do user é safe -->
+                <p>{{ recipe.preparation_steps|safe }}</p>
+            {% else %}        
+                <!-- linebreaksbr é para incluir <br> em cada paragrafo -->
+                <p>{{ recipe.preparation_steps|linebreaksbr }}</p>
+            {% endif %}
+        </div>
     {% endif %}
 
 </div>

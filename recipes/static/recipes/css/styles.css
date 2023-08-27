@@ -257,12 +257,28 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .main-content-datail .recipe-list-item {
-        max-width: 80rem;
-        margin: 0 auto;
+    max-width: 80rem;
+    margin: 0 auto;
 }
 
 .main-content-datail .recipe-list-item:hover {
     transform: scale(1);
     box-shadow: -5px 5px 15px rgba(0, 0, 0, .2);
+}
 
+.preparation-steps h1,
+.preparation-steps h2,
+.preparation-steps h3,
+.preparation-steps h4,
+.preparation-steps h5,
+.preparation-steps h6,
+.preparation-steps p,
+.preparation-steps pre {
+    margin: 2rem 0;
+}
+
+.preparation-steps ol,
+.preparation-steps ul {
+    margin: 2rem;
+    padding: 0 2rem;
 }

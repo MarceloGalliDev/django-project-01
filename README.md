@@ -163,3 +163,4 @@
     ```
 
 # Testes
+- pip install pytest pytest-django

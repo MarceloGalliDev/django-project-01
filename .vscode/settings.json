@@ -12,6 +12,7 @@
   "autopep8.args": ["--config", "setup.cfg"],
   "autopep8.importStrategy": "fromEnvironment",
   "python.defaultInterpreterPath": "venv/bin/python",
+  "python.envFile": "${workspaceFolder}/.env",
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8", // ms-python.python
     "editor.tabSize": 4,

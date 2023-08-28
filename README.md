@@ -76,3 +76,90 @@
         = no shell
             - recipes.first().category.name
             - no código acima usamos a função first para pegar o primeiro elemento do query set, e temos então um objeto e dele eu quero a category que é um model com foreignKey no model Recipes, e devido a essa ligação temos acesso ao name do category.
+
+# Como renomear um projeto Django
+    - Necessário mudar em todos os arquivos que possui o nome do seu projeto
+    - Pesquisaremos em todos os arquivos de uma vez
+        - Vamos na lupa e pesquisaremos pelo nome e Replace
+
+# Traduzindo páginas do Django
+    - LANGUAGE_CODE = 'pt-br'
+    - TIME_ZONE = 'America/Sao_Paulo'
+
+# Autopep/ Flake8/ MyPy/ PyLint
+    = pip install mypy
+        = comando para verificar um arquivo
+            -mypy nome-arquivo.py
+    = pip install pylint-django
+        = para gerar arquivo .pylintrc
+            - pylint --generate-rcfile > .pylintrc
+    = pip install flake8
+        = comando para verificar todos erros em todos arquivos
+            - flake8 
+    - pip install autopep8
+    - MyPy = usuado para tipagem
+
+    ```
+        {
+        "python.languageServer": "Pylance", // ms-python.vscode-pylance
+        "python.testing.unittestEnabled": false, // ms-python.python
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": [], // -x to bail
+        "flake8.args": ["--config=.flake8"],
+        "flake8.importStrategy": "fromEnvironment",
+        "pylint.args": ["--rcfile=.pylintrc"],
+        "pylint.importStrategy": "fromEnvironment",
+        "mypy-type-checker.args": ["--config-file=mypy.ini"],
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "autopep8.args": ["--config", "setup.cfg"],
+        "autopep8.importStrategy": "fromEnvironment",
+        "python.defaultInterpreterPath": "venv/bin/python",
+        "[python]": {
+            "editor.defaultFormatter": "ms-python.autopep8", // ms-python.python
+            "editor.tabSize": 4,
+            "editor.insertSpaces": true,
+            "editor.formatOnSave": true,
+            "editor.formatOnType": true,
+            "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+            }
+        },
+        "[html]": {
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "vscode.html-language-features",
+            "editor.quickSuggestions": {
+            "other": true,
+            "comments": true,
+            "strings": true
+            }
+        },
+        "[django-html]": {
+            "editor.formatOnSave": false,
+            "editor.defaultFormatter": "vscode.html-language-features",
+            "editor.quickSuggestions": {
+            "other": true,
+            "comments": true,
+            "strings": true
+            }
+        },
+        "files.associations": {
+            "*.js": "javascript",
+            "*.jsx": "javascriptreact",
+            "*.xml": "html",
+            "*.svg": "html",
+            "*.html": "html",
+            "django-html": "html", // batisteo.vscode-django
+            "**/*.html": "html",
+            "**/templates/**/*.html": "django-html",
+            "**/base_templates/**/*.html": "django-html",
+            "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+        },
+        "emmet.includeLanguages": {
+            "django-html": "html", // batisteo.vscode-django
+            "javascript": "javascriptreact",
+            "typescript": "typescriptreact"
+        }
+        }
+    ```
+
+# Testes

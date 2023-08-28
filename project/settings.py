@@ -1,4 +1,3 @@
-# flake8: noqa
 """
 Django settings for project project.
 
@@ -12,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,12 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aq)=52qjmn7r8it_msmhsktdnb@qjku)zd5la_-z_nst8uir@v'
+SECRET_KEY = 'django-insecure-aq)=52qjmn7r8it_msmhsktdnb@qjku)zd5la_-z_nst8uir@v' # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+# list[str] está indicando tipagem de lista de strings
+ALLOWED_HOSTS: list[str] = []
 
 
 # Application definition
@@ -89,16 +91,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', # noqa
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', # noqa
     },
 ]
 
@@ -106,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -120,7 +122,7 @@ USE_TZ = True
 # Incluir a barra antes do 'static/'
 STATIC_URL = '/static/'
 
-# Aqui incluimos o caminho do global static para o Django é uma lista logo pode ter mais de uma pasta
+# Aqui incluimos o caminho do global static para o Django é uma lista logo pode ter mais de uma pasta # noqa
 STATICFILES_DIRS = [
     BASE_DIR / 'base_static',
 ]

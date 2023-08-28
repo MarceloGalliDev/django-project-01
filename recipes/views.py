@@ -7,9 +7,11 @@ from .models import Recipe, Category
 
 def home(request):
     # estamos filtrando todos os dados para que apareça somente os que tem True no is_published
-    recipes = Recipe.objects.filter(
-        is_published = True
-    ).order_by('-id')
+    recipes = get_list_or_404(
+        Recipe.objects.filter(
+            is_published = True
+        ).order_by('-id')
+    )
     return render(request, 'recipes/pages/home.html', context={
         # tudo que estiver dentro do home será acessado pela chave recipe.
         # exemplo recipe.title, o title esta vindo do banco de dados relacionando o models a views

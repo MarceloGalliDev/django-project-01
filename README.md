@@ -164,3 +164,12 @@
 
 # Testes
 - pip install pytest pytest-django
+- podemos escrever test no arquivo test.py
+= no terminal do mac
+    - ativamos o venv
+    = executamos 
+        - pytest
+    = executar mostrando prints
+        - pytest -rP
+    = comando padrao Django
+        - python manage.py test

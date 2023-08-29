@@ -32,6 +32,12 @@
 > test
 > testserver
 
+
+# Info Django
+= args e kwargs
+    - args tem que ser informado os dados em ordem, por exemplo um id, tem que ser em sequencia
+    - kwargs temos que passar um dicionario com as informações
+
 # Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
 
@@ -173,3 +179,6 @@
         - pytest -rP
     = comando padrao Django
         - python manage.py test
+    = pip install pytest-watch
+        - usamos para que o terminal execute automaticamente todo test
+        - comando ptw

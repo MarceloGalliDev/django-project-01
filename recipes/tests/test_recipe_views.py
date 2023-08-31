@@ -6,6 +6,9 @@ from .test_recipe_base import RecipeTestBase
 from unittest import skip
 
 
+# TDD = escrever os testes antes da aplicação
+
+
 # para pular o teste usamos @skip
 # @skip('WIP') WIP = working in progress
 class RecipeViewsTest(RecipeTestBase):
@@ -79,3 +82,22 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertIn('joao', content)
         self.assertIn('Café da manhã', content)
         self.assertEqual(len(response_context_recipes), 1)
+
+    def test_recipe_home_template_dont_load_recipes_not_published(self):
+        self.make_recipe(is_published=False)
+        response = self.client.get(reverse('recipes:home'))
+        self.assertIn(
+            '<h1>Not Found</h1>',
+            response.content.decode('utf-8')
+        )
+
+    def test_recipe_category_view_function_is_correct(self):
+        view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
+        self.assertIs(view.func, views.category)
+
+    def test_recipe_category_template_dont_load_recipes_not_published(self):
+        # pegando o id de recipe
+        recipe = self.make_recipe(is_published=False)
+        response = self.client.get(reverse('recipes:category', kwargs={'category_id': recipe.id}))
+        self.assertEqual(response.status_code, 404)
+

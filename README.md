@@ -182,3 +182,20 @@
     = pip install pytest-watch
         - usamos para que o terminal execute automaticamente todo test
         - comando ptw
+    = executar um unico test usando -k como busca
+        - pytest -k 'nome da variável'
+        - pwt -- -k 'nome da variável'
+= debug console
+    - colocamos o breakpoint após o código que queremos
+    - executamos o test pelo play com debug
+    = comando para ver paramêtros que podemos acessar
+        - dir(nome da váriavel)
+
+
+# Teste Unitarios
+- usamos o test do Django para fazer
+- python manage.py test
+= comandos
+    - python manage.py test
+    - python manage.py test -v3 (para verbosidade, que é + detalhes exibidos)
+    - python manage.py test -k 'nome da váriavel'

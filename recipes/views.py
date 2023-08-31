@@ -9,7 +9,7 @@ def home(request):
     # estamos filtrando todos os dados para que apareça somente os que tem True no is_published
     recipes = get_list_or_404(
         Recipe.objects.filter(
-            is_published = True
+            is_published=True
         ).order_by('-id')
     )
     return render(request, 'recipes/pages/home.html', context={
@@ -41,8 +41,6 @@ def category(request, category_id):
             is_published=True
         ).order_by('-id')
     )
-    
-    
     return render(request, 'recipes/pages/category.html', context={
         'recipes': recipes,
         # aqui temos um queryset

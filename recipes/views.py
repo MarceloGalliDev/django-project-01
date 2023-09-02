@@ -1,3 +1,4 @@
+# pylint: disable=all
 # flake8: noqa
 from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
@@ -61,4 +62,10 @@ def recipe(request, id):
     })
 
 def search(request):
-    pass
+    # verificar o debugger para obter as informações
+    # caso não encontre o 'q' vai retornar none
+    search_term = request.GET.get('q')
+    
+    if not search_term:
+        raise Http404()
+    return render(request, 'recipes/pages/search.html')

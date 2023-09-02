@@ -41,6 +41,17 @@
 = resolve()
     - função do Django que manipula URL, resolve o caminho da url trazendo como argumentos informações sobre a url chamado de ResolverMatch, e esse objeto contém varios detalhes sobre a URL correspondente incluindo a função de visualização a view ('func')
 
+= querystring
+    - usado para inserir pares de chave e valor
+    - na url apos o '?' é tudo uma query string
+    - url/?search=qualquervalor&query=qualquervalor
+    - so vem no método GET
+    = tag form
+        - action na tag corresponde o redirecionamento da url
+        - method é o método que vamos utilizar, para query string sempre GET
+        - name é o paramêtro que utilizamos para mostrar apartir de qual caracter na url é uma query string, para identificar
+        - required usado para forçar o usuario a digitar um valor
+
 # Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
 

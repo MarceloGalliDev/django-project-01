@@ -38,6 +38,9 @@
     - args tem que ser informado os dados em ordem, por exemplo um id, tem que ser em sequencia
     - kwargs temos que passar um dicionario com as informações
 
+= resolve()
+    - função do Django que manipula URL, resolve o caminho da url trazendo como argumentos informações sobre a url chamado de ResolverMatch, e esse objeto contém varios detalhes sobre a URL correspondente incluindo a função de visualização a view ('func')
+
 # Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
 

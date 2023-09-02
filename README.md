@@ -170,6 +170,9 @@
 
 # Testes
 - pip install pytest pytest-django
+- pip install parameterized (testes multiplos no for)
+- pip install pytest-watch
+- pip install coverage
 - podemos escrever test no arquivo test.py
 = no terminal do mac
     - ativamos o venv
@@ -179,7 +182,7 @@
         - pytest -rP
     = comando padrao Django
         - python manage.py test
-    = pip install pytest-watch
+    = pytest-watch
         - usamos para que o terminal execute automaticamente todo test
         - comando ptw
     = executar um unico test usando -k como busca
@@ -190,6 +193,14 @@
     - executamos o test pelo play com debug
     = comando para ver paramêtros que podemos acessar
         - dir(nome da váriavel)
+= realtórios de testes
+    - usamos o coverage
+    - branchs é quando temos mais de uma possibilidade na função e tem que ser testada
+    - criar arquivo .coveragerc
+    - coverage run --omit='*/venv/*' -m pytest
+    - coverage run -m pytest
+    = gerando html
+        - coverage html
 
 
 # Teste Unitarios

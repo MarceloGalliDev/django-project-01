@@ -52,6 +52,9 @@
         - name é o paramêtro que utilizamos para mostrar apartir de qual caracter na url é uma query string, para identificar
         - required usado para forçar o usuario a digitar um valor
 
+= | safe
+    - usamos o pipe safe no template para que o Django renderize html do lado client
+
 # Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
 

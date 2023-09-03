@@ -3,6 +3,7 @@
 from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from utils.recipes.factory import make_recipe
+from django.db.models import Q
 from .models import Recipe, Category
 
 
@@ -68,6 +69,25 @@ def search(request):
     
     if not search_term:
         raise Http404()
+
+    # aqui estamos usando dois title__icontains que seria a mesma coisa que colocar um ILIKE no sql, apos os __ é a inclusão do código slq aqui no Django
+    # ordenando pelo id DESC
+    # no debbuger para ver a query usamos no console, str(recipes.query)
+    # indicando para o Django que queremos OR, usamos o Q importado do django.db.models
+    recipes = Recipe.objects.filter(
+        Q(
+            Q(title__icontains=search_term) |
+            Q(description__icontains=search_term),
+        ),
+        is_published=True
+    ).order_by('-id')
+    
+    # eu posso continuar editando minha recipes
+    # recipes = recipes.order_by('-id')
+    # recipes = recipes.filter(is_published=True)
+    
     return render(request, 'recipes/pages/search.html', {
-        'page_title': f'Search for {search_term} | ',
+        'page_title': f'Search for "{search_term}" |',
+        'search_term': search_term,
+        'recipes': recipes,
     })

@@ -55,6 +55,9 @@
 = | safe
     - usamos o pipe safe no template para que o Django renderize html do lado client
 
+= quebrar linha
+    - option + z
+
 # Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
 

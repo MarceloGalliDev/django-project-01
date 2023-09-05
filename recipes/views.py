@@ -5,6 +5,7 @@ from django.shortcuts import render, get_list_or_404, get_object_or_404
 from utils.recipes.factory import make_recipe
 from django.db.models import Q
 from .models import Recipe, Category
+from django.core.paginator import Paginator
 
 
 def home(request):
@@ -14,6 +15,14 @@ def home(request):
             is_published=True
         ).order_by('-id')
     )
+
+    # pegando a query string para url
+    current_page = request.GET.get('page', 1)
+    # passo os objetos e a quantidade a ser exibida
+    paginator = Paginator(recipes, 9)
+    # obtendo a página
+    page_object = Paginator.get_page(current_page)
+
     return render(request, 'recipes/pages/home.html', context={
         # tudo que estiver dentro do home será acessado pela chave recipe.
         # exemplo recipe.title, o title esta vindo do banco de dados relacionando o models a views

@@ -1,4 +1,6 @@
+# pylint: disable=all
 import math
+from django.core.paginator import Paginator
 
 
 def make_pagination_range(
@@ -35,3 +37,24 @@ def make_pagination_range(
         # se minha ultima página está aparecendo
         'last_page_out_of_range': stop_range < total_pages,
     }
+
+def make_pagination(request, queryset, per_page, qty_pages=4):
+    # pegando a query string para url
+    try:
+        current_page = int(request.GET.get('page', 1))
+    except ValueError:
+        current_page = 1
+    # passo os objetos e a quantidade a ser exibida
+    paginator = Paginator(queryset, per_page)
+    # obtendo a página
+    page_obj = paginator.get_page(current_page)
+
+    pagination_range = make_pagination_range(
+        # pegando a quantidade de páginas pelo paginator
+        paginator.page_range,
+        # quantidade de numeros a ser exibido
+        qty_pages,
+        # página atual
+        current_page
+    )
+    return page_obj, pagination_range

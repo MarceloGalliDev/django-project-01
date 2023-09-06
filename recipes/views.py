@@ -2,10 +2,17 @@
 # flake8: noqa
 from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
+from utils.pagination import make_pagination
 from utils.recipes.factory import make_recipe
 from django.db.models import Q
 from .models import Recipe, Category
-from django.core.paginator import Paginator
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# criando constantes por convenção
+PER_PAGES = os.getenv('PER_PAGES', 6)
 
 
 def home(request):
@@ -15,18 +22,14 @@ def home(request):
             is_published=True
         ).order_by('-id')
     )
-
-    # pegando a query string para url
-    current_page = request.GET.get('page', 1)
-    # passo os objetos e a quantidade a ser exibida
-    paginator = Paginator(recipes, 9)
-    # obtendo a página
-    page_object = Paginator.get_page(current_page)
+    
+    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
 
     return render(request, 'recipes/pages/home.html', context={
         # tudo que estiver dentro do home será acessado pela chave recipe.
         # exemplo recipe.title, o title esta vindo do banco de dados relacionando o models a views
-        'recipes': recipes,
+        'recipes': page_obj,
+        'pagination_range': pagination_range
     })
 
 
@@ -52,11 +55,14 @@ def category(request, category_id):
             is_published=True
         ).order_by('-id')
     )
+    
+    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
+    
     return render(request, 'recipes/pages/category.html', context={
-        'recipes': recipes,
+        'recipes': page_obj,
+        'pagination_range': pagination_range,
         # aqui temos um queryset
         #'title': f'{recipes.first().category.name} - Category'
-        
         # aqui temos uma lista
         'title': f'{recipes[0].category.name} - Category | '
     })
@@ -95,8 +101,12 @@ def search(request):
     # recipes = recipes.order_by('-id')
     # recipes = recipes.filter(is_published=True)
     
+    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
+    
     return render(request, 'recipes/pages/search.html', {
         'page_title': f'Search for "{search_term}" |',
         'search_term': search_term,
-        'recipes': recipes,
+        'recipes': page_obj,
+        'pagination_range': pagination_range,
+        'additional_url_query': f'&q={search_term}',
     })

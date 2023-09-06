@@ -1,3 +1,4 @@
+# pylint: disable=all
 """
 Django settings for project project.
 
@@ -10,7 +11,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-aq)=52qjmn7r8it_msmhsktdnb@qjku)zd5la_-z_nst8uir@v' # noqa
+SECRET_KEY = os.getenv('SECRET_KEY', 'CHANGE-ME')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if os.getenv('DEBUG') == '1' else False
 
 
 # list[str] está indicando tipagem de lista de strings

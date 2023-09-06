@@ -4,7 +4,7 @@ from django.urls import reverse, resolve
 from recipes import views
 from .test_recipe_base import RecipeTestBase
 from unittest import skip
-
+from unittest.mock import patch
 
 # TDD = escrever os testes antes da aplicação
 
@@ -101,3 +101,21 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:category', kwargs={'category_id': recipe.id}))
         self.assertEqual(response.status_code, 404)
 
+    # criando mocks
+    # passamos o caminho da variável que desejamos manipular dentro do decorator
+    # segundo paramêtro é o valor que desejamos
+    @patch('recipes.views.PER_PAGES', new=3)
+    def test_recipe_home_template_dont_load_recipes_not_published_v2(self):
+        # criando receitas de recipe
+        for i in range(18):
+            kwargs = {'slug': f'r{i}', 'author_data': {'username': f'u{i}'}}
+            self.make_recipe(**kwargs)
+        
+        response = self.client.get(reverse('recipes:home'))
+        # o recipes passa por dentro do paginator
+        recipes = response.context['recipes']
+        paginator = recipes.paginator
+        # vamos testar se o num_pages é = 2
+        self.assertEqual(paginator.num_pages, 6)
+        # navegando nas páginas, pagina 1 tem que ter 3 recipes
+        self.assertEqual(len(paginator.get_page(1)), 3)

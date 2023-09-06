@@ -230,3 +230,6 @@
     - python manage.py test
     - python manage.py test -v3 (para verbosidade, que é + detalhes exibidos)
     - python manage.py test -k 'nome da váriavel'
+
+# Criando chaves
+- python -c "import string as s;from random import SystemRandom as sr;print(''.join(sr().choices(s.ascii_letters + s.punctuation, k=64)))"

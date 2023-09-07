@@ -6,9 +6,9 @@ from utils.pagination import make_pagination
 from utils.recipes.factory import make_recipe
 from django.db.models import Q
 from .models import Recipe, Category
-from django.contrib import messages
 import os
 from dotenv import load_dotenv
+# from django.contrib import messages
 
 load_dotenv()
 
@@ -29,7 +29,7 @@ def home(request):
     # enviando flash msg
     # não tem necessidade de passar para o context, o Django ja envia isso para o template
     # flash msg fica gravado na seção
-    messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
+    # messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
 
     return render(request, 'recipes/pages/home.html', context={
         # tudo que estiver dentro do home será acessado pela chave recipe.

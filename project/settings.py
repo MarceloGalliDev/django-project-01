@@ -1,4 +1,5 @@
 # pylint: disable=all
+# flake8: noqa
 """
 Django settings for project project.
 
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'recipes',
+    'authors',
 ]
 
 MIDDLEWARE = [

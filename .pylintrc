@@ -4,3 +4,4 @@ django-settings-module=project.settings
 
 [MESSAGES CONTROL]
 errors-only=yes
+disable=F0002

@@ -1,4 +1,6 @@
 # pylint: disable=all
+
+import re
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -12,6 +14,25 @@ def add_attr(field, attrs_name, attrs_new_value):
 def add_placeholder(field, placeholder_value):
     add_attr(field, 'placeholder', placeholder_value)
 
+# fazendo validação do campo especifico
+# usando expressões regulares
+def strong_password(password):
+    # o r'' é para indicar uma expressão regular
+    # expressão regular que chega se o campo possui caracteres de a - z e etc...
+    # o sinal de ^ indica o inicio e $ indica o final
+    # .{8,} pelo menos 8 caracteres
+    regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
+
+    if not regex.match(password):
+        raise ValidationError([
+            'Invalid password, ',
+            'Necessary a lowercase and a uppercase ',
+            'Necessary a number ',
+            'Necessary at least 8 characters',
+        ],
+            code='invalid'
+        )
+
 class RegisterForm(forms.ModelForm):
     # acessando o init da classe
     def __init__(self, *args, **kwargs):
@@ -21,6 +42,24 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['email'], 'Your email here')
 
     # sempre que for subscrever um campo faça diretamenta aqui
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                'placeholder': 'Write your password',
+            }
+        ),
+        error_messages={
+            'required': 'This field must be a valid password',
+        },
+        help_text=(
+            'Password must have at least one uppercase letter, '
+            'one lowercase letter and one number. The length should be '
+            'at least 8 characters.'
+        ),
+        validators=[strong_password]
+    )
+
     password2 = forms.CharField(
         required=True,
         widget=forms.PasswordInput(
@@ -30,7 +69,13 @@ class RegisterForm(forms.ModelForm):
         ),
         error_messages={
             'required': 'This field must be a valid password',
-        }
+        },
+        help_text=(
+            'Password must have at least one uppercase letter, '
+            'one lowercase letter and one number. The length should be '
+            'at least 8 characters.'
+        ),
+        validators=[strong_password]
     )
 
     # meta dados para o form

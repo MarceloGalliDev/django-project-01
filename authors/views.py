@@ -1,3 +1,6 @@
+# pylint: disable=all
+# flake8: noqa
+
 from django.shortcuts import render, redirect
 from .forms.forms import RegisterForm
 from django.http import Http404

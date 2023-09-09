@@ -57,7 +57,8 @@ class RegisterForm(forms.ModelForm):
             'one lowercase letter and one number. The length should be '
             'at least 8 characters.'
         ),
-        validators=[strong_password]
+        validators=[strong_password],
+        label='Password'
     )
 
     password2 = forms.CharField(
@@ -75,7 +76,8 @@ class RegisterForm(forms.ModelForm):
             'one lowercase letter and one number. The length should be '
             'at least 8 characters.'
         ),
-        validators=[strong_password]
+        validators=[strong_password],
+        label='Password2'
     )
 
     # meta dados para o form
@@ -98,7 +100,6 @@ class RegisterForm(forms.ModelForm):
             'last_name': 'Last Name',
             'username': 'Username',
             'email': 'E-mail',
-            'password': 'Password',
         }
         help_texts = {
             'email': 'The e-mail must be valid.',
@@ -119,27 +120,24 @@ class RegisterForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={
                 'placeholder': 'Type your last name here',
             }),
-            'password': forms.PasswordInput(attrs={
-                'placeholder': 'Enter your password',
-            })
         }
 
     # função de validação de um campo especifico
-    def clean_password(self):
-        # pegando o dado vindo do formulario
-        # self.data é o dado cru
-        # self.cleaned_data é o dado ja tratato
-        data = self.cleaned_data.get('password')
+    # def clean_password(self):
+    #     # pegando o dado vindo do formulario
+    #     # self.data é o dado cru
+    #     # self.cleaned_data é o dado ja tratato
+    #     data = self.cleaned_data.get('password')
 
-        # no params o value vai para %(value)s, podendo ser qualquer nome
-        if 'atenção' in data:
-            raise ValidationError(
-                message='Não digite "%(value)s" neste campo.',
-                code='invalid',
-                params={'value': 'atenção'}
-            )
+    #     # no params o value vai para %(value)s, podendo ser qualquer nome
+    #     if 'atenção' in data:
+    #         raise ValidationError(
+    #             message='Não digite "%(value)s" neste campo.',
+    #             code='invalid',
+    #             params={'value': 'atenção'}
+    #         )
 
-        return data
+    #     return data
 
     # método clean validar o formulario como um todo
     def clean(self):

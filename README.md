@@ -222,6 +222,10 @@
     = gerando html
         - coverage html
 
+# Tipos de testes
+- unitarios
+- funcionais
+- integração
 
 # Teste Unitarios
 - usamos o test do Django para fazer

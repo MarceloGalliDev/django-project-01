@@ -42,6 +42,30 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['email'], 'Your email here')
 
     # sempre que for subscrever um campo faça diretamenta aqui
+    first_name = forms.CharField(
+        error_messages={'required': 'Write your first name'},
+        required=True,
+        label='First Name',
+    )
+
+    last_name = forms.CharField(
+        error_messages={'required': 'Write your last name'},
+        required=True,
+        label='Last Name',
+    )
+
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(
+            attrs={
+                'placeholder': 'Write your email',
+            }
+        ),
+        error_messages={'required': 'Write your email'},
+        label='Email',
+        help_texts=('Write your email'),
+    )
+
     password = forms.CharField(
         required=True,
         widget=forms.PasswordInput(
@@ -100,9 +124,6 @@ class RegisterForm(forms.ModelForm):
             'last_name': 'Last Name',
             'username': 'Username',
             'email': 'E-mail',
-        }
-        help_texts = {
-            'email': 'The e-mail must be valid.',
         }
         error_messages = {
             'username': {

@@ -10,7 +10,7 @@ class AuthorRegisterFormUnitTest(TestCase):
         form = RegisterForm()
         # pegando o campo do formulário e não o valor do campo
         placeholder = form['email'].field.widget.attrs['placeholder']
-        self.assertEqual('Your email here', placeholder)
+        self.assertEqual('Write your email', placeholder)
 
     @parameterized.expand([
         ('password', (
@@ -58,12 +58,20 @@ class AuthorRegisterFormIntergrationTest(DjangoTestCase):
         return super().setUp(*args, **kwargs)
 
     @parameterized.expand([
-        ('username', 'This field must be a valid username')
-    ])   
+        ('username', 'This field must be a valid username'),
+        ('first_name', 'Write your first name'),
+        ('last_name', 'Write your last name'),
+        ('email', 'Write your email'),
+        ('password', 'This field must be a valid password'),
+        ('password2', 'This field must be a valid password'),
+    ])
     def test_fields_cannot_be_empty(self, field, msg):
         self.form_data[field] = ''
         url = reverse('authors:create')
         # quando temos um redirect e é necessario que a função siga o fluxo
         # é necessario incluir um follow=True
         response = self.client.post(url, data=self.form_data, follow=True)
+        # conteúdo renderizado na tela
         self.assertIn(msg, response.content.decode('utf-8'))
+        # dados do contexto
+        self.assertIn(msg, response.context['form'].errors.get(field))

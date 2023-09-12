@@ -31,7 +31,11 @@ def register_create(request):
     if form.is_valid():
         # se quiser pegar dados
         # data = form.save()
-        form.save()
+        # aqui estamos pegando os dados do save
+        user = form.save(commit=False)
+        # editamos o password
+        user.set_password(user.password)
+        user = form.save()
         messages.success(request, 'Your user is created, please log in')
         
         # deletando chave de um dict

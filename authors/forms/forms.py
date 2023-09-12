@@ -1,5 +1,5 @@
 # pylint: disable=all
-
+# flake8: noqa:E501
 import re
 from django import forms
 from django.contrib.auth.models import User
@@ -42,66 +42,73 @@ class RegisterForm(forms.ModelForm):
         add_placeholder(self.fields['email'], 'Your email here')
 
     # sempre que for subscrever um campo faça diretamenta aqui
+    username = forms.CharField(
+        required=True,
+        label='Username',
+        help_text=(
+            'Username must have letters, numbers or one of those @.+-_. '
+            'The length should be between 4 and 150 characters.'
+        ),
+        error_messages={
+            'required': 'This field must not be empty',
+            'min_length': 'Username must have at least 4 characters',
+            'max_length': 'Username must have less than 150 characters',
+        },
+        min_length=4, 
+        max_length=150,
+    )
+
     first_name = forms.CharField(
-        error_messages={'required': 'Write your first name'},
         required=True,
         label='First Name',
+        error_messages={'required': 'Write your first name'},
     )
 
     last_name = forms.CharField(
-        error_messages={'required': 'Write your last name'},
         required=True,
         label='Last Name',
+        error_messages={'required': 'Write your last name'},
     )
 
     email = forms.EmailField(
         required=True,
-        widget=forms.EmailInput(
-            attrs={
-                'placeholder': 'Write your email',
-            }
-        ),
-        error_messages={'required': 'Write your email'},
-        label='Email',
-        help_texts=('Write your email'),
+        label='E-mail',
+        help_text='The e-mail must be valid.',
+        error_messages={'required': 'E-mail is required'},
     )
 
     password = forms.CharField(
         required=True,
+        label='Password',
         widget=forms.PasswordInput(
             attrs={
                 'placeholder': 'Write your password',
             }
         ),
-        error_messages={
-            'required': 'This field must be a valid password',
-        },
         help_text=(
             'Password must have at least one uppercase letter, '
             'one lowercase letter and one number. The length should be '
             'at least 8 characters.'
         ),
+        error_messages={'required': 'Password is required'},
         validators=[strong_password],
-        label='Password'
     )
 
     password2 = forms.CharField(
         required=True,
+        label='Password2',
         widget=forms.PasswordInput(
             attrs={
                 'placeholder': 'Repeat your password',
             }
         ),
-        error_messages={
-            'required': 'This field must be a valid password',
-        },
         help_text=(
             'Password must have at least one uppercase letter, '
             'one lowercase letter and one number. The length should be '
             'at least 8 characters.'
         ),
+        error_messages={'required': 'Password2 is required'},
         validators=[strong_password],
-        label='Password2'
     )
 
     # meta dados para o form
@@ -119,29 +126,29 @@ class RegisterForm(forms.ModelForm):
         # exclude = ['first_name', 'last_name', 'username']
 
         # para alterar o nome dos labels da renderização da page
-        labels = {
-            'first_name': 'First Name',
-            'last_name': 'Last Name',
-            'username': 'Username',
-            'email': 'E-mail',
-        }
-        error_messages = {
-            'username': {
-                'required': 'This field must be a valid username',
-                'max_length': 'This is the maximum length of 50 caracters.',
-                'invalid': 'This field is invalid.',
-            }
-        }
-        # aqui subscrevemos os campos de widgets, todos campos do form tem o seu
-        # aqui podemos inserir atributos nos campos
-        widgets = {
-            'first_name': forms.TextInput(attrs={
-                'placeholder': 'Type your first name here',
-            }),
-            'last_name': forms.TextInput(attrs={
-                'placeholder': 'Type your last name here',
-            }),
-        }
+        # labels = {
+        #     'first_name': 'First Name',
+        #     'last_name': 'Last Name',
+        #     'username': 'Username',
+        #     'email': 'E-mail',
+        # }
+        # error_messages = {
+        #     'username': {
+        #         'required': 'This field must be a valid username',
+        #         'max_length': 'This is the maximum length of 50 caracters.',
+        #         'invalid': 'This field is invalid.',
+        #     }
+        # }
+        # # aqui subscrevemos os campos de widgets, todos campos do form tem o seu
+        # # aqui podemos inserir atributos nos campos
+        # widgets = {
+        #     'first_name': forms.TextInput(attrs={
+        #         'placeholder': 'Type your first name here',
+        #     }),
+        #     'last_name': forms.TextInput(attrs={
+        #         'placeholder': 'Type your last name here',
+        #     }),
+        # }
 
     # função de validação de um campo especifico
     # def clean_password(self):
@@ -159,6 +166,16 @@ class RegisterForm(forms.ModelForm):
     #         )
 
     #     return data
+    
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exists = User.objects.filter(email=email).exists()
+        
+        if exists:
+            raise ValidationError('User e-mail is already in use', code='invalid',)
+        
+        return email
+    
 
     # método clean validar o formulario como um todo
     def clean(self):

@@ -119,3 +119,25 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertEqual(paginator.num_pages, 6)
         # navegando nas páginas, pagina 1 tem que ter 3 recipes
         self.assertEqual(len(paginator.get_page(1)), 3)
+
+    def test_invalid_page_query_uses_page_one(self):
+        for i in range(8):
+            kwargs = {'slug': f'r{i}', 'author_data': {'username': f'u{i}'}}
+            self.make_recipe(**kwargs)
+
+        with patch('recipes.views.PER_PAGES', new=3):
+            response = self.client.get(reverse('recipes:home') + '?page=12A')
+            self.assertEqual(
+                response.context['recipes'].number,
+                1
+            )
+            response = self.client.get(reverse('recipes:home') + '?page=2')
+            self.assertEqual(
+                response.context['recipes'].number,
+                2
+            )
+            response = self.client.get(reverse('recipes:home') + '?page=3')
+            self.assertEqual(
+                response.context['recipes'].number,
+                3
+            )

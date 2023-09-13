@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from .forms.forms import RegisterForm
 from django.http import Http404
 from django.contrib import messages
+from django.urls import reverse
 
 def register_view(request):
     # aqui estamos trafegando os dados do POST que veio de register_create
@@ -15,6 +16,7 @@ def register_view(request):
     form = RegisterForm(register_form_data)
     return render(request, 'authors/pages/register_view.html', {
         'form': form,
+        'form_action': reverse('authors:create'),
     })
 
 

@@ -31,6 +31,6 @@ def make_chrome_browser(*options):
 if __name__ == '__main__':
     browser = make_chrome_browser()
     # browser = make_chrome_browser('--headless')
-    browser.get('https://www.google.com/')
+    browser.get('http://127.0.0.1:8000/')
     sleep(5)
     browser.quit()

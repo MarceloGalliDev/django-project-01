@@ -11,16 +11,26 @@ CHROMEDRIVER_NAME = 'chromedriver'
 CHROMEDRIVER_PATH = ROOT_PATH / 'bin' / CHROMEDRIVER_NAME
 
 
-# arquivo de options chromedriver
-chrome_options = webdriver.ChromeOptions()
+# --headless = executa o serviço sem aparecer na tela
+# *options está extraindo os argumentos, vai vir uma tupla cheio de args
+def make_chrome_browser(*options):
+    # arquivo de options chromedriver
+    chrome_options = webdriver.ChromeOptions()
 
-# arquivo de service chromedriver
-chrome_service = Service(executable_path=CHROMEDRIVER_PATH)
+    if options is not None:
+        for option in options:
+            chrome_options.add_argument(option)
 
-# arquivo de browser chromedriver
-browser = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    # arquivo de service chromedriver
+    chrome_service = Service(executable_path=CHROMEDRIVER_PATH)
+    # arquivo de browser chromedriver
+    browser = webdriver.Chrome(service=chrome_service, options=chrome_options)
+    return browser
 
 
-browser.get('https://www.google.com/')
-sleep(5)
-browser.quit()
+if __name__ == '__main__':
+    browser = make_chrome_browser()
+    # browser = make_chrome_browser('--headless')
+    browser.get('https://www.google.com/')
+    sleep(5)
+    browser.quit()

@@ -368,6 +368,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Forms */
+.inline-form {
+    display: inline;
+}
+
+.plaintext-button {
+    font-size: 1.6rem;
+    display: inline;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--color-primary);
+}
+
 .form-content {
     max-width: 64rem;
     margin: 0 auto;

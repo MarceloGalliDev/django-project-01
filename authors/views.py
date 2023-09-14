@@ -1,11 +1,14 @@
 # pylint: disable=all
 # flake8: noqa
-
 from django.shortcuts import render, redirect
-from .forms.forms import RegisterForm
 from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
+from .forms import RegisterForm, LoginForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
+
 
 def register_view(request):
     # aqui estamos trafegando os dados do POST que veio de register_create
@@ -16,7 +19,7 @@ def register_view(request):
     form = RegisterForm(register_form_data)
     return render(request, 'authors/pages/register_view.html', {
         'form': form,
-        'form_action': reverse('authors:create'),
+        'form_action': reverse('authors:register_create'),
     })
 
 
@@ -42,9 +45,58 @@ def register_create(request):
         
         # deletando chave de um dict
         del(request.session['register_form_data'])
+        return redirect(reverse('authors:login'))
 
     return redirect('authors:register')
 
+
+def login_view(request):
+    form = LoginForm()
+    return render(request, 'authors/pages/login.html', {
+        'form': form,
+        'form_action': reverse('authors:login_create'),
+    })
+
+
+# so vamos fazer o match dos dados
+def login_create(request):
+    if not request.POST:
+        raise Http404()
+
+    form = LoginForm(request.POST)
+    login_url = reverse('authors:login')
+
+    if form.is_valid():
+        # autenticando usuario
+        authenticated_user = authenticate(
+            # quero o usuario, se não tiver passamos uma string vazia
+            username=form.cleaned_data.get('username', ''),
+            password=form.cleaned_data.get('password', ''),
+        )
+        
+        if authenticated_user is not None:
+            messages.success(request, 'You are now authenticated')
+            login(request, authenticated_user)
+            return redirect(login_url)
+        messages.error(request, 'Invalid credentials')
+        return redirect(login_url)
+    messages.error(request, 'Invalid username or password')
+    return redirect(login_url)
+
+
+# redirect_field_name é um redirecionamento para o lugar onde estava anteriormente
+@login_required(login_url='authors:login', redirect_field_name='next')
+def logout_view(request):
+    # criado login via form por segurança para uso do CSRF
+    # duas barreiras de segurança
+    if not request.POST:
+        return redirect(reverse('authors:login'))
+
+    if request.POST.get('username') != request.user.username:
+        return redirect(reverse('authors:login'))
+
+    logout(request)
+    return redirect(reverse('authors:login'))
 
 # quando o formulário possui dados é chamado de BOUND
 

@@ -33,6 +33,9 @@
 > testserver
 
 
+# Terminal Unix Commands
+> sysctl -n machdep.cpu.brand_string = ver processador do pc
+
 # Info Django
 = args e kwargs
     - args tem que ser informado os dados em ordem, por exemplo um id, tem que ser em sequencia

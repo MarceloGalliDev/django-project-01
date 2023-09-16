@@ -4,17 +4,8 @@ from django.test import TestCase
 from recipes.models import Recipe, Category, User
 
 
-# extraindo setUp e tearDown para uma classe
-# usado para criar funções antes e depois dos testes
-class RecipeTestBase(TestCase):
-    # setUP method é responsavel por ser executado antes de cada test
-    def setUp(self) -> None:
-        return super().setUp()
-
-    # tearDOWN é executado depois do test
-    def tearDown(self) -> None:
-        return super().tearDown()
-
+# agora com esse mixin eu posso exporta-lo para outros locais
+class RecipeMixin:
     def make_category(self, name='Category'):
         return Category.objects.create(name=name)
 
@@ -70,3 +61,28 @@ class RecipeTestBase(TestCase):
             preparation_steps_is_html=preparation_steps_is_html,
             is_published=is_published,
         )
+    
+    def make_recipe_in_batch(self, qtd=10):
+        recipes = []
+        for i in range(qtd):
+            kwargs = {
+                'title': f'Recipe Title {i}',
+                'slug': f'r{i}',
+                'author_data': {'username': f'u{i}'}
+            }
+            recipe = self.make_recipe(**kwargs)
+            recipes.append(recipe)
+        return recipes
+
+
+# extraindo setUp e tearDown para uma classe
+# usado para criar funções antes e depois dos testes
+# herdando heranças multiplas
+class RecipeTestBase(TestCase, RecipeMixin):
+    # setUP method é responsavel por ser executado antes de cada test
+    def setUp(self) -> None:
+        return super().setUp()
+
+    # tearDOWN é executado depois do test
+    def tearDown(self) -> None:
+        return super().tearDown()

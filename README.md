@@ -5,76 +5,120 @@
 > pip install django
 > criar arquivo de debugger
 
-# Django commands
-> check
-> compilemessages
-> createcachetable
-> dbshell
-> diffsettings
-> dumpdata
-> flush
-> inspectdb
-> loaddata
-> makemessages
-> makemigrations = criando models de tabela
-> migrate = persistindo tabelas no banco de dados
-> optimizemigration
-> runserver = inicializando servidor django
-> sendtestemail
-> shell = terminal do django
-> showmigrations
-> sqlflush = apagando os dados do banco de dados e cache do django
-> sqlmigrate
-> sqlsequencereset
-> squashmigrations
-> startapp = iniciando aplicativo
-> startproject = iniciando projeto
-> test
-> testserver
 
+> # Django commands
+>> ##### runserver 
+>> - inicializando servidor django
+>
+>> ##### makemigrations 
+>> - criando models de tabela
+>
+>> ##### migrate 
+>> - persistindo tabelas no banco de dados
+>
+>> ##### inspectdb 
+>> - criar model de uma tabela ja existente
+>
+>> ##### sqlflush 
+>> - apagando os dados do banco de dados e cache do django
+>
+>> ##### flush 
+>> - apagando dados cache do django
+>
+>> ##### shell 
+>> - terminal do django
+>
+>> ##### startapp 
+>> - iniciando aplicativo
+>
+>> ##### startproject 
+>> - iniciando projeto
+>
+>> ##### test 
+>> - executar testes padrões do Django
+>
+>> ##### check
+>
+>> ##### compilemessages
+>
+>> ##### createcachetable
+>
+>> ##### dbshell
+>
+>> ##### diffsettings
+>
+>> ##### dumpdata
+>
+>> ##### loaddata
+>
+>> ##### makemessages
+>
+>> ##### optimizemigration
+>
+>> ##### sendtestemail
+>
+>> ##### showmigrations
+>
+>> ##### sqlmigrate
+>
+>> ##### sqlsequencereset
+>
+>> ##### squashmigrations
+>
+>> ##### testserver
+>---
 
-# Terminal Unix Commands
-> sysctl -n machdep.cpu.brand_string = ver processador do pc
+> # Terminal Unix Commands
+>> ##### consultar processador do pc
+>> - sysctl -n machdep.cpu.brand_string 
+>---
 
-# Info Django
-= args e kwargs
-    - args tem que ser informado os dados em ordem, por exemplo um id, tem que ser em sequencia
-    - kwargs temos que passar um dicionario com as informações
+> # Info Django
+>> ##### *args e **kwargs
+>> - *args tem que ser informado os dados em ordem, por exemplo um id, tem que ser em sequencia.
+>> - **kwargs temos que passar um dicionario com as informações.
+>
+>> ##### resolve()
+>> - função do Django que manipula URL, resolve o caminho da url trazendo como argumentos informações sobre a url chamado de ResolverMatch, e esse objeto contém varios detalhes sobre a URL correspondente incluindo a função de visualização a view ('func')
+>
+>> ##### querystring
+>> - usado para inserir pares de chave e valor
+>> - na url apos o '?' é tudo uma query string
+>> - url/?search=qualquervalor&query=qualquervalor
+>> - so vem no método GET
+>
+>> ##### tag form
+>> - action na tag corresponde o redirecionamento da url
+>> - method é o método que vamos utilizar, para query string sempre GET
+>> - name é o paramêtro que utilizamos para mostrar apartir de qual caracter na url é uma query string, para identificar
+>> - required usado para forçar o usuario a digitar um valor
+>
+>> ##### safe
+>> - | safe
+>> - usamos o pipe safe no template para que o Django renderize html do lado client
+>
+>> ##### quebrar linha
+>> - option + z
+>---
 
-= resolve()
-    - função do Django que manipula URL, resolve o caminho da url trazendo como argumentos informações sobre a url chamado de ResolverMatch, e esse objeto contém varios detalhes sobre a URL correspondente incluindo a função de visualização a view ('func')
-
-= querystring
-    - usado para inserir pares de chave e valor
-    - na url apos o '?' é tudo uma query string
-    - url/?search=qualquervalor&query=qualquervalor
-    - so vem no método GET
-    = tag form
-        - action na tag corresponde o redirecionamento da url
-        - method é o método que vamos utilizar, para query string sempre GET
-        - name é o paramêtro que utilizamos para mostrar apartir de qual caracter na url é uma query string, para identificar
-        - required usado para forçar o usuario a digitar um valor
-
-= | safe
-    - usamos o pipe safe no template para que o Django renderize html do lado client
-
-= quebrar linha
-    - option + z
-
-# Arquivos Statics
+##### Arquivos Statics
 - Nos arquivos HTML usamos a tag load static
 
-# Jinja do Django
+
+##### Jinja do Django
 - Quando fazemos um for dentro de uma página que renderiza outro template esse template recebe como parametro os dados contidos no for.
 
-# Filtros do Django para Jinja
+
+##### Filtros do Django para Jinja
 - Verifique a documentação
 - usamos pipe ('|') dentro das {{ }} para indicar o uso de filtros
 
-# Atualizando cache página
+
+##### Atualizando cache página
 - cmd + Shift + R
 
-# Usando Shell do Django
+
+##### Usando Shell do Django
 - python manage.py shell
     - aqui posso verificar comandos de query entre outros.
     - aqui podemos verificar como está a execução de determinado código
@@ -106,16 +150,19 @@
             - recipes.first().category.name
             - no código acima usamos a função first para pegar o primeiro elemento do query set, e temos então um objeto e dele eu quero a category que é um model com foreignKey no model Recipes, e devido a essa ligação temos acesso ao name do category.
 
-# Como renomear um projeto Django
+
+##### Como renomear um projeto Django
     - Necessário mudar em todos os arquivos que possui o nome do seu projeto
     - Pesquisaremos em todos os arquivos de uma vez
         - Vamos na lupa e pesquisaremos pelo nome e Replace
 
-# Traduzindo páginas do Django
+
+##### Traduzindo páginas do Django
     - LANGUAGE_CODE = 'pt-br'
     - TIME_ZONE = 'America/Sao_Paulo'
 
-# Autopep/ Flake8/ MyPy/ PyLint
+
+##### Autopep/ Flake8/ MyPy/ PyLint
     = pip install mypy
         = comando para verificar um arquivo
             -mypy nome-arquivo.py
@@ -191,7 +238,14 @@
         }
     ```
 
-# Testes
+
+##### Tipos de testes
+= unitarios
+= funcionais
+= integração
+
+
+##### Testes
 - pip install pytest pytest-django
 - pip install parameterized (testes multiplos no for)
 - pip install pytest-watch
@@ -225,18 +279,30 @@
     = gerando html
         - coverage html
 
-# Tipos de testes
-- unitarios
-- funcionais
-- integração
 
-# Teste Unitarios
-- usamos o test do Django para fazer
-- python manage.py test
+##### Teste Unitarios
+= usamos o test do Django para faze-los
 = comandos
     - python manage.py test
     - python manage.py test -v3 (para verbosidade, que é + detalhes exibidos)
     - python manage.py test -k 'nome da váriavel'
 
-# Criando chaves
+
+##### Teste PyTests
+= somente pytest vai entender essas marcações
+= depois de criado o marker no pytest.ini, inserir na parte do test decorator
+    = esse comando vai executar somente os testes que possuir esse marker
+    = posso inserir na classe, ou em uma função especifica
+        - pytest -m 'functional_test' -rP 
+        - pytest -m 'not functional_test' -rP
+    = executar um pytest unico
+        - pytest -k 'nome_do_test'
+
+
+##### Criando chaves criptograficas
 - python -c "import string as s;from random import SystemRandom as sr;print(''.join(sr().choices(s.ascii_letters + s.punctuation, k=64)))"
+
+
+##### Mixins
+= Padrão de projeto, onde criamos um saco de classes
+= Cuidados com as heranças de classes e atributos

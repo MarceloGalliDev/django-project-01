@@ -14,6 +14,8 @@ class RegisterForm(forms.ModelForm):
         # adicionando args nos campos pela classe ou buscando um widget de dentro
         add_attr(self.fields['username'], 'placeholder', 'Your username here')
         add_placeholder(self.fields['email'], 'Your email here')
+        add_placeholder(self.fields['first_name'], 'Your first name here')
+        add_placeholder(self.fields['last_name'], 'Your last name here')
 
     # sempre que for subscrever um campo faça diretamenta aqui
     username = forms.CharField(

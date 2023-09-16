@@ -107,9 +107,7 @@ class RecipeViewsTest(RecipeTestBase):
     @patch('recipes.views.PER_PAGES', new=3)
     def test_recipe_home_template_dont_load_recipes_not_published_v2(self):
         # criando receitas de recipe
-        for i in range(18):
-            kwargs = {'slug': f'r{i}', 'author_data': {'username': f'u{i}'}}
-            self.make_recipe(**kwargs)
+        self.make_recipe_in_batch(qtd=18)
         
         response = self.client.get(reverse('recipes:home'))
         # o recipes passa por dentro do paginator

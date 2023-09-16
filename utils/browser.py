@@ -1,7 +1,12 @@
+import os
 from pathlib import Path
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 # esse comando Path(__file__) traz o caminho completo deste arquivo
@@ -20,6 +25,9 @@ def make_chrome_browser(*options):
     if options is not None:
         for option in options:
             chrome_options.add_argument(option)
+
+    if os.getenv('SELENIUM_HEADLESS') == '1':
+        chrome_options.add_argument('--headless')
 
     # arquivo de service chromedriver
     chrome_service = Service(executable_path=CHROMEDRIVER_PATH)

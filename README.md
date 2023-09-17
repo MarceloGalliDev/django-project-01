@@ -5,6 +5,12 @@
 > pip install django
 > criar arquivo de debugger
 
+# Processo Django
+> criar template
+> criar view
+> criar url
+> tratar css
+> tratar cados
 
 > # Django commands
 >> ##### runserver 

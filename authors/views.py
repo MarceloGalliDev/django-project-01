@@ -4,10 +4,12 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
+
+from .forms.recipe_form import AuthorRecipeForm
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from recipes.models import Recipe
 
 
 def register_view(request):
@@ -64,7 +66,6 @@ def login_create(request):
         raise Http404()
 
     form = LoginForm(request.POST)
-    login_url = reverse('authors:login')
 
     if form.is_valid():
         # autenticando usuario
@@ -77,11 +78,12 @@ def login_create(request):
         if authenticated_user is not None:
             messages.success(request, 'You are now authenticated')
             login(request, authenticated_user)
-            return redirect(login_url)
-        messages.error(request, 'Invalid credentials')
-        return redirect(login_url)
-    messages.error(request, 'Invalid username or password')
-    return redirect(login_url)
+        else:
+            messages.error(request, 'Invalid credentials')
+    else:
+        messages.error(request, 'Invalid username or password')
+    
+    return redirect(reverse('authors:dashboard'))
 
 
 # redirect_field_name é um redirecionamento para o lugar onde estava anteriormente
@@ -104,7 +106,50 @@ def logout_view(request):
 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard(request):
-    return render(request, 'authors/pages/dashboard.html')
+    # estamos pegando as receitas que não estão publicadas
+    # para lançar no dashboard administrativo
+    # e o author so vai ver suas recipes
+    recipes = Recipe.objects.filter(
+        is_published=False,
+        author=request.user,
+    )
+    return render(
+        request, 
+        'authors/pages/dashboard.html',
+        context={
+            'recipes': recipes
+        },
+    )
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_edit(request, id):
+    # filter() retorna uma queryset, no caso uma lista de coisas
+    # e no caso a instancia está recebendo uma recipe 
+    recipe = Recipe.objects.filter(
+        is_published=False,
+        author=request.user,
+        pk=id,
+    ).first()
+
+    if not recipe:
+        raise Http404()
+
+    # necessario inserir um POST
+    # esse form está atrelado a um instancia de recipe
+    # quando o usuario salvar o form ele vai salvar no instance
+    form = AuthorRecipeForm(
+        request.POST or None,
+        instance=recipe
+    )
+
+    return render(
+        request,
+        'authors/pages/dashboard_recipe.html',
+        context={
+            'form': form,
+        }
+    )
 
 
 # quando o formulário possui dados é chamado de BOUND

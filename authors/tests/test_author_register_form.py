@@ -1,6 +1,6 @@
 # flake8: noqa
 from django.test import TestCase
-from authors.forms.register_forms import RegisterForm
+from authors.forms.register_form import RegisterForm
 from parameterized import parameterized
 from django.test import TestCase as DjangoTestCase
 from django.urls import reverse

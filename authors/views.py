@@ -101,6 +101,12 @@ def logout_view(request):
     logout(request)
     return redirect(reverse('authors:login'))
 
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard(request):
+    return render(request, 'authors/pages/dashboard.html')
+
+
 # quando o formulário possui dados é chamado de BOUND
 
 # session registra o id do navegador, para salvar um cookie com seu id

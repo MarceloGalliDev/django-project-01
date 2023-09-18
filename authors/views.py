@@ -138,10 +138,29 @@ def dashboard_recipe_edit(request, id):
     # necessario inserir um POST
     # esse form está atrelado a um instancia de recipe
     # quando o usuario salvar o form ele vai salvar no instance
+    # quando temos arquivos no nosso form é necessario manipula-los
     form = AuthorRecipeForm(
-        request.POST or None,
+        data=request.POST or None,
+        files=request.FILES or None,
         instance=recipe
     )
+
+    if form.is_valid():
+        # agora o form é valido e eu posso tentar salvar
+        # aqui estamos fazendo um salve fake
+        # estamos salvando os dados no recipe
+        recipe = form.save(commit=False)
+        
+        # confirmando que o author é dono do recipe
+        recipe.author = request.user
+        # nunca vai ser possivel enviar HTML
+        recipe.preparation_steps_is_html = False
+        # verificar se foi publicado
+        recipe.is_published = False
+        
+        recipe.save()
+        messages.success(request, 'Sua receita foi salva com sucesso!')
+        return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
 
     return render(
         request,
@@ -152,6 +171,33 @@ def dashboard_recipe_edit(request, id):
     )
 
 
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_new(request):
+    form = AuthorRecipeForm(
+        data=request.POST or None,
+        files=request.FILES or None,
+    )
+    
+    if form.is_valid():
+        recipe = form.save(commit=False)
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+        
+        recipe.save()
+        messages.success(request, 'Salvo com sucesso')
+        return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
+
+    return render(
+        request,
+        'authors/pages/dashboard_recipe.html',
+        context={
+            'form': form,
+            'form_action': reverse('authors:dashboard_recipe_new')
+        }
+    )
+        
+    
 # quando o formulário possui dados é chamado de BOUND
 
 # session registra o id do navegador, para salvar um cookie com seu id

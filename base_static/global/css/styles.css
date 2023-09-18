@@ -63,6 +63,16 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-headings);
 }
 
+/* tamanho maximo do campo pai, usando o max-width */
+img {
+    max-width: 100%;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
 .container {
     max-width: 144rem;
     margin: 0 auto;
@@ -361,6 +371,10 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
 }
 
+.left {
+    text-align: left;
+}
+
 .m-x {
     margin: 0 var(--spacing-gutter-medium);
 }
@@ -423,6 +437,8 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--color-error-dark);
 }
 
+.form-content textarea,
+.form-content select,
 .form-content input {
     width: 100%;
     padding: 1rem;
@@ -441,6 +457,10 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
     background: var(--color-primary-dark);
     color: var(--color-white);
+}
+
+.span-2 {
+    grid-column: span 2;
 }
 
 @media (max-width: 600px) {

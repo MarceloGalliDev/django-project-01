@@ -2,6 +2,8 @@
 # pylint: disable=all
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -35,3 +37,19 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+    
+    # adicionando o botão no django admin para visualização da página
+    # podemos inserir essa função diretamente no template desde que ja esteja salvo a recipe
+    def get_absolute_url(self):
+        return reverse('recipes:recipe', args=(self.id,))
+    
+    # acessando os campos de model
+    # slugfy cria uma slug a partir de um texto
+    # estamos adicionando uma slug no objeto
+    # o django ja salva o método
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.title)}'
+            self.slug = slug
+
+        return super().save(*args, **kwargs)

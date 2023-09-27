@@ -312,3 +312,17 @@
 ##### Mixins
 = Padrão de projeto, onde criamos um saco de classes
 = Cuidados com as heranças de classes e atributos
+= Usamos mixins para adicionar métodos em outras classes
+
+
+##### Class Based Views
+> Aqui teremos o método dispatch
+    - ele tenta encontrar o método do http para buscar a classe correta
+    - levantamento de erros ja possuem na CBV
+
+> Views de base
+    - são heranças que podem ser repassadas a outras CBV
+    - verificar documentação para verificar a ancestralidade de métodos
+    - a descrição dos métodos está na documentação
+    - https://docs.djangoproject.com/pt-br/4.2/topics/class-based-views/
+    - https://docs.djangoproject.com/pt-br/4.2/ref/class-based-views/

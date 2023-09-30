@@ -16,15 +16,15 @@ class RecipeViewsTest(RecipeTestBase):
         view = resolve(reverse('recipes:home'))
         # o view.func está vindo do debbug de view = resolve('/')
         # estamos testando a view function está executando mesmo a função home()
-        self.assertIs(view.func, views.home)
+        self.assertIs(view.func.view_class, views.RecipeListViewBase)
 
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
         self.assertIs(view.func, views.category)
 
     def test_recipe_detail_view_function_is_correct(self):
-        view = resolve(reverse('recipes:recipe', kwargs={'id': 1}))
-        self.assertIs(view.func, views.recipe)
+        view = resolve(reverse('recipes:recipe', kwargs={'pk': 1}))
+        self.assertIs(view.func.view_class, views.RecipeDetailView)
 
     def test_recipe_home_view_returns_status_code_200_OK(self):
         self.make_recipe()
@@ -58,7 +58,7 @@ class RecipeViewsTest(RecipeTestBase):
 
     def test_recipe_detail_view_returns_404_if_no_recipes_found(self):
         response = self.client.get(
-            reverse('recipes:recipe', kwargs={'id': 1000})
+            reverse('recipes:recipe', kwargs={'pk': 1000})
         )
         self.assertEqual(response.status_code, 404)
 
@@ -87,13 +87,13 @@ class RecipeViewsTest(RecipeTestBase):
         self.make_recipe(is_published=False)
         response = self.client.get(reverse('recipes:home'))
         self.assertIn(
-            '<h1>Not Found</h1>',
+            '<h1>No recipes found here!!!</h1>',
             response.content.decode('utf-8')
         )
 
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
-        self.assertIs(view.func, views.category)
+        self.assertIs(view.func.view_class, views.RecipeListViewCategory)
 
     def test_recipe_category_template_dont_load_recipes_not_published(self):
         # pegando o id de recipe

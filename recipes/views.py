@@ -11,14 +11,14 @@ from .models import Recipe, Category
 import os
 from dotenv import load_dotenv
 # from django.contrib import messages
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 load_dotenv()
 
 
 # criando constantes por convenção
-PER_PAGES = os.getenv('PER_PAGES', 6)
+PER_PAGES = int(os.getenv('PER_PAGES', 6))
 
 
 class RecipeListViewBase(ListView):
@@ -77,21 +77,51 @@ class RecipeListViewCategory(RecipeListViewBase):
             category__id=self.kwargs.get('category_id'),
         )
         
+        if not qs:
+            raise Http404()
+        
         return qs
+
+    def get_context_data(self, *args, **kwargs) -> dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
+        search_term = self.request.GET.get('q', '')
+        
+        # vou pegar do context o valor de recipes
+        ctx.update({
+            'title': f'{ctx.get("recipes")[0].category.name} - Category | '
+        })
+        
+        return ctx
+        
+        
     
 
 class RecipeListViewSearch(RecipeListViewBase):
     template_name = 'recipes/pages/search.html'
 
     def get_queryset(self, *args, **kwargs):
+        # verificar o debugger para obter as informações
+        # caso não encontre o 'q' vai retornar '' como padrão
         search_term = self.request.GET.get('q', '')
+        
+        if not search_term:
+            raise Http404()
+        
         qs = super().get_queryset(*args, **kwargs)
+        # aqui estamos usando dois title__icontains que seria a mesma coisa que colocar um ILIKE no sql, apos os __ é a inclusão do código slq aqui no Django
+        # ordenando pelo id DESC
+        # no debbuger para ver a query usamos no console, str(recipes.query)
+        # indicando para o Django que queremos OR, usamos o Q importado do django.db.models
         qs = qs.filter(
             Q(
                 Q(title__icontains=search_term) |
                 Q(description__icontains=search_term),
             )
         )
+        # eu posso continuar editando minha recipes
+        # recipes = recipes.order_by('-id')
+        # recipes = recipes.filter(is_published=True)
+        
         return qs
 
     def get_context_data(self, *args, **kwargs):
@@ -105,53 +135,28 @@ class RecipeListViewSearch(RecipeListViewBase):
         })
 
         return ctx
-    
-
-def recipe(request, id):
-    # pk é a primary key que é gerado automatico pelo django como id
-    recipe = get_object_or_404(Recipe, pk=id, is_published=True, )
-    
-    return render(request, 'recipes/pages/recipe-view.html', context={
-        'recipe': make_recipe(),
-        'is_detail_page': True,
-    })
-
-def search(request):
-    # verificar o debugger para obter as informações
-    # caso não encontre o 'q' vai retornar '' como padrão
-    search_term = request.GET.get('q', '').strip()
-    
-    if not search_term:
-        raise Http404()
-
-    # aqui estamos usando dois title__icontains que seria a mesma coisa que colocar um ILIKE no sql, apos os __ é a inclusão do código slq aqui no Django
-    # ordenando pelo id DESC
-    # no debbuger para ver a query usamos no console, str(recipes.query)
-    # indicando para o Django que queremos OR, usamos o Q importado do django.db.models
-    recipes = Recipe.objects.filter(
-        Q(
-            Q(title__icontains=search_term) |
-            Q(description__icontains=search_term),
-        ),
-        is_published=True
-    ).order_by('-id')
-    
-    # eu posso continuar editando minha recipes
-    # recipes = recipes.order_by('-id')
-    # recipes = recipes.filter(is_published=True)
-    
-    page_obj, pagination_range = make_pagination(request, recipes, PER_PAGES)
-    
-    return render(request, 'recipes/pages/search.html', {
-        'page_title': f'Search for "{search_term}" |',
-        'search_term': search_term,
-        'recipes': page_obj,
-        'pagination_range': pagination_range,
-        'additional_url_query': f'&q={search_term}',
-    })
 
 
- # enviando flash msg
+class RecipeDetailView(DetailView):
+    model = Recipe
+    context_object_name = 'recipe'
+    template_name = 'recipes/pages/recipe-view.html'
+    
+    def get_context_data(self, *args, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
+        
+        # aqui estamos pegando o context e o atualizando
+        # inserindo novos dados no context
+        ctx.update({
+            'is_detail_page': True,
+        })
+        
+        return ctx
+
+
+# enviando flash msg
 # não tem necessidade de passar para o context, o Django ja envia isso para o template
 # flash msg fica gravado na seção
 # messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
+
+# verificar documentação para ver a qual se enquadra as view, por exemplo como DetailView

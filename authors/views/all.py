@@ -4,8 +4,6 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
-
-from authors.forms.recipe_form import AuthorRecipeForm
 from authors.forms import RegisterForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -121,105 +119,6 @@ def dashboard(request):
         },
     )
 
-
-@login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard_recipe_edit(request, id):
-    # filter() retorna uma queryset, no caso uma lista de coisas
-    # e no caso a instancia está recebendo uma recipe 
-    recipe = Recipe.objects.filter(
-        is_published=False,
-        author=request.user,
-        pk=id,
-    ).first()
-
-    if not recipe:
-        raise Http404()
-
-    # necessario inserir um POST
-    # esse form está atrelado a um instancia de recipe
-    # quando o usuario salvar o form ele vai salvar no instance
-    # quando temos arquivos no nosso form é necessario manipula-los
-    form = AuthorRecipeForm(
-        data=request.POST or None,
-        files=request.FILES or None,
-        instance=recipe
-    )
-
-    if form.is_valid():
-        # agora o form é valido e eu posso tentar salvar
-        # aqui estamos fazendo um salve fake
-        # estamos salvando os dados no recipe
-        recipe = form.save(commit=False)
-        
-        # confirmando que o author é dono do recipe
-        recipe.author = request.user
-        # nunca vai ser possivel enviar HTML
-        recipe.preparation_steps_is_html = False
-        # verificar se foi publicado
-        recipe.is_published = False
-        
-        recipe.save()
-        messages.success(request, 'Sua receita foi salva com sucesso!')
-        return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
-
-    return render(
-        request,
-        'authors/pages/dashboard_recipe.html',
-        context={
-            'form': form,
-        }
-    )
-
-
-@login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard_recipe_new(request):
-    form = AuthorRecipeForm(
-        data=request.POST or None,
-        files=request.FILES or None,
-    )
-    
-    if form.is_valid():
-        recipe = form.save(commit=False)
-        recipe.author = request.user
-        recipe.preparation_steps_is_html = False
-        recipe.is_published = False
-        
-        recipe.save()
-        messages.success(request, 'Salvo com sucesso')
-        return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
-
-    return render(
-        request,
-        'authors/pages/dashboard_recipe.html',
-        context={
-            'form': form,
-            'form_action': reverse('authors:dashboard_recipe_new')
-        }
-    )
-
-
-@login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard_recipe_delete(request):
-    if not recipe:
-        raise Http404()
-    
-    POST = request.POST
-    id = POST.get('id')
-    
-    # filter() retorna uma queryset, no caso uma lista de coisas
-    # e no caso a instancia está recebendo uma recipe 
-    recipe = Recipe.objects.filter(
-        is_published=False,
-        author=request.user,
-        pk=id,
-    ).first()
-
-    if not recipe:
-        raise Http404()
-
-    recipe.delete()
-    messages.success(request, 'Deleted successfully.')
-    return redirect(reverse('authors:dashboard'))
     
 # quando o formulário possui dados é chamado de BOUND
 

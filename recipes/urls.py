@@ -11,24 +11,44 @@ app_name = 'recipes'
 urlpatterns = [
     path(
         '', 
-        views.RecipeListViewBase.as_view(), name='home'
+        views.RecipeListViewBase.as_view(), 
+        name='home'
     ),
     path(
         'home/', 
-        views.RecipeListViewHome.as_view(), name='home_root'
+        views.RecipeListViewHome.as_view(), 
+        name='home_root'
     ),
     path(
         'recipes/search/',
-        views.RecipeListViewSearch.as_view(), name="search"
+        views.RecipeListViewSearch.as_view(), 
+        name="search"
     ),
     path(
         'recipes/category/<int:category_id>/',
-        views.RecipeListViewCategory.as_view(), name="category"
+        views.RecipeListViewCategory.as_view(), 
+        name="category"
     ),
     path(
         'recipes/<int:pk>/', 
-        views.RecipeDetailView.as_view(), name='recipe'
+        views.RecipeDetailView.as_view(), 
+        name='recipe'
     ),
+    path(
+        'recipes/api/v1/', 
+        views.RecipeListViewHomeApi.as_view(), 
+        name='recipes_api_v1'
+    ),
+    path(
+        'recipes/api/v1/<int:pk>/',
+        views.RecipeDetailAPI.as_view(),
+        name="recipes_api_v1_detail",
+    ),
+    path(
+        'recipes/theory/',
+        views.theory,
+        name='recipes_theory',
+    )
 ]
 
 # quanto mais especificado o url, passamos ele para as primeiras posições

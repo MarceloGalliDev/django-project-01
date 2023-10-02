@@ -457,3 +457,20 @@ https://mac.getutm.app/
         - ssh {nome do servidor} 'cd ~/app_repo ; git pull origin main ; sudo systemctl restart {socket}
 
 > Criando uma API
+    - Usaremos o Django padrão para gerar
+
+> Django DebugToolBar
+    - https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#install-the-package
+
+> Optimizando DB
+    - Usamos uma função para o model do Django
+        - 1 para N ou 1 para 1
+            - OneToOneField()
+            - ForeignKey
+                - select_related({campo1}, {campo2})
+        - N para N
+            - ManyToManyField()
+            - foreignKey
+                - prefetch_related({campo1}, {campo2})
+
+> Theory for Django

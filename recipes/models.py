@@ -5,6 +5,25 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
 
+from django.db.models import F
+from django.db.models import Value
+from django.db.models.functions import Concat
+
+# usando managers, o managers comporta os objects
+# vamos subscrever ou criar nosso próprios manager
+
+class RecipeManager(models.Manager):
+    # exemplo
+    def get_published(self):
+        return self.filter(
+            is_published=True
+        ).annotate(
+        author_full_name=Concat(
+            F('author__first_name'), Value(' '),
+            F('author__last_name'), Value(' ('),
+            F('author__username'), Value(')'),       
+        )
+    )
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
@@ -53,3 +72,4 @@ class Recipe(models.Model):
             self.slug = slug
 
         return super().save(*args, **kwargs)
+    

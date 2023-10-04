@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 # from django.contrib import messages
 from django.views.generic import ListView, DetailView
 from django.forms.models import model_to_dict
+from tag.models import Tag
 
 # relacionado ao SQL
 from django.db.models.aggregates import Count
@@ -203,6 +204,41 @@ class RecipeDetailAPI(RecipeDetailView):
             recipe_dict,
             safe=False,
         )
+
+
+class RecipeListViewTag(RecipeListViewBase):
+    template_name = 'recipes/pages/tag.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        # aqui estamos usando dois title__icontains que seria a mesma coisa que colocar um ILIKE no sql, apos os __ é a inclusão do código slq aqui no Django
+        # ordenando pelo id DESC
+        # no debbuger para ver a query usamos no console, str(recipes.query)
+        # indicando para o Django que queremos OR, usamos o Q importado do django.db.models
+        qs = qs.filter(
+            # kwargs vai vir da URL
+            # tags__slug vem do model tags, que faz relação genérica com tag que tem slug
+            tags__slug=self.kwargs.get('slug', ''),
+        )
+        
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        # filter sempre retorna uma queryset, ai necessario um first()
+        page_title = Tag.objects.filter(slug=self.kwargs.get('slug', '')).first()
+
+        if not page_title:
+            page_title = 'No recipes found'
+
+        page_title = f'{page_title}- Tag | '
+
+        ctx.update({
+            'page_title': f'Search for "{page_title}" |',
+        })
+
+        return ctx
+
 
 # enviando flash msg
 # não tem necessidade de passar para o context, o Django ja envia isso para o template

@@ -9,6 +9,10 @@ from django.db.models import F
 from django.db.models import Value
 from django.db.models.functions import Concat
 
+from django.contrib.contenttypes.fields import GenericRelation
+from tag.models import Tag
+
+
 # usando managers, o managers comporta os objects
 # vamos subscrever ou criar nosso próprios manager
 
@@ -53,6 +57,7 @@ class Recipe(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     # esse campo puxamos diretamente do models User padrão do Django
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    tags = GenericRelation(Tag, related_query_name='recipes')
 
     def __str__(self):
         return self.title

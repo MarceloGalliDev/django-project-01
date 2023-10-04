@@ -472,5 +472,3 @@ https://mac.getutm.app/
             - ManyToManyField()
             - foreignKey
                 - prefetch_related({campo1}, {campo2})
-
-> Theory for Django

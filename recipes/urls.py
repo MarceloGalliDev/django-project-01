@@ -24,6 +24,15 @@ urlpatterns = [
         views.RecipeListViewSearch.as_view(), 
         name="search"
     ),
+    # slug é uma mascara sob a url 
+    # <slug:slug> slug esquerda é indicação que será slug
+    # <slug:slug> slug direita é o nome do parametro
+    # slug vem da busca com kwargs
+    path(
+        'recipes/tags/<slug:slug/',
+        views.RecipeListViewTag.as_view(), 
+        name="tag"
+    ),
     path(
         'recipes/category/<int:category_id>/',
         views.RecipeListViewCategory.as_view(), 

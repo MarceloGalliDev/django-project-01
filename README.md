@@ -303,6 +303,8 @@
         - pytest -m 'not functional_test' -rP
     = executar um pytest unico
         - pytest -k 'nome_do_test'
+= carregar arquivo .env
+    - pip install pytest-dotenv
 
 
 ##### Criando chaves criptograficas
@@ -454,7 +456,7 @@ https://mac.getutm.app/
         - sudo systemctl restart {socket}
     
     - diretamente do terminal do pc
-        - ssh {nome do servidor} 'cd ~/app_repo ; git pull origin main ; sudo systemctl restart {socket}
+        - ssh {nome do servidor} 'cd ~/app_repo ; git pull origin main ; venv/bin/python manage.py makemigrations ; venv/bin/python manage.py migrate ; sudo systemctl restart {socket} ; sudo systemctl restart nginx ;'
 
 > Criando uma API
     - Usaremos o Django padrão para gerar
@@ -472,3 +474,16 @@ https://mac.getutm.app/
             - ManyToManyField()
             - foreignKey
                 - prefetch_related({campo1}, {campo2})
+
+> Manipulação via shell
+- from recipes.models import Recipe
+- r = Recipe.objects.all().last()
+- r.tags.all()
+- r.tags.filter(name__icontains='teste')
+- r.tags.last() ou first()
+- r.tags.create(name='mais uma tag)
+- r.tags.filter(name__icontains='teste').delete()
+
+fazendo clone
+- r.id = None; r.slug='novo'; r.save()
+- t = Tag.objects.create(name='essa é nova', content_object=r)

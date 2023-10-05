@@ -35,6 +35,7 @@ pylint-plugin-utils==0.8.2
 PySocks==1.7.1
 pytest==7.4.0
 pytest-django==4.5.2
+pytest-dotenv==0.5.2
 pytest-watch==4.2.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0

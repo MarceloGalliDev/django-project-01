@@ -49,7 +49,9 @@ class RecipeListViewBase(ListView):
             is_published=True
         )
         
+        # para melhorar o desempenho das consulta no banco
         qs = qs.select_related('author', 'category')
+        qs = qs.prefetch_related('tags')
         
         return qs
     

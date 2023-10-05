@@ -2,11 +2,10 @@
     {% if recipe.cover %}
         <div class="recipe-cover">
             <a href="{{ recipe.get_absolute_url }}">
-                <img src="{{ recipe.cover.url }}" alt="temp">
+                <img src="{{ recipe.cover.url }}" alt="Temporário">
             </a>
         </div>
     {% endif %}
-    
     <div class="recipe-title-container">
         <h2 class="recipe-title">
             <a href="{{ recipe.get_absolute_url }}">
@@ -17,25 +16,23 @@
 
     <div class="recipe-author">
 
-        <span class="recipe-author-item">
-            <i class="fas fa-user"></i>
-            {% if recipe.author is not None %}
+        {% if recipe.author is not None %}
+            <span class="recipe-author-item">
+                <i class="fas fa-user"></i>
                 {% if recipe.author.first_name %}
                     {{ recipe.author.first_name }} {{ recipe.author.last_name }}
                 {% else %}
                     {{ recipe.author.username }}
                 {% endif %}
-            {% else %}
-                Desconhecido
-            {% endif %}
-        </span>
+            </span>
+        {% endif %}
 
         <span class="recipe-author-item">
             <i class="fas fa-calendar-alt"></i>
             {{ recipe.created_at|date:"d/m/Y" }} às {{ recipe.created_at|date:"H:i" }}
         </span>
 
-        {% if recipe.category_id is not None %}
+        {% if recipe.category is not None %}
             <span class="recipe-author-item">
                 <a href="{% url 'recipes:category' recipe.category.id %}">
                     <i class="fas fa-layer-group"></i>
@@ -43,7 +40,6 @@
                 </a>
             </span>
         {% endif %}
-
     </div>
 
     <div class="recipe-content">
@@ -60,35 +56,33 @@
         <div class="recipe-meta recipe-servings">
             <h3 class="recipe-meta-title"><i class="fas fa-pizza-slice"></i> Porções</h3>
             <div class="recipe-meta-text">
-                {{ recipe.servings }} {{ recipe.servings_time }}
+                {{ recipe.servings }} {{ recipe.servings_unit }}
             </div>
         </div>
     </div>
 
-    {% if is_detail_page is not True  %}
-    <footer class="recipe-footer">
-        <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipes:recipe' recipe.id %}">
-            <i class="fas fa-eye"></i>
-            <span>ver mais...</span>
-        </a>
-    </footer>
+    {% if is_detail_page is not True %}
+        <footer class="recipe-footer">
+            <a class="recipe-read-more button button-dark button-full-width" href="{% url 'recipes:recipe' recipe.id %}">
+                <i class="fas fa-eye"></i>
+                <span>ver mais...</span>
+            </a>
+        </footer>
     {% endif %}
 
     {% if is_detail_page is True %}
         <div class="preparation-steps">
             {% if recipe.preparation_steps_is_html is True %}
-                <!-- o safe aqui é para indicar ao Django que o HTML vindo do user é safe -->
-                <p>{{ recipe.preparation_steps|safe }}</p>
-            {% else %}        
-                <!-- linebreaksbr é para incluir <br> em cada paragrafo -->
-                <p>{{ recipe.preparation_steps|linebreaksbr }}</p>
+                {{ recipe.preparation_steps|safe }}
+            {% else %}
+                {{ recipe.preparation_steps|linebreaksbr }}
             {% endif %}
 
             {% if recipe.tags.all %}
                 <p>
                     Tags:
                     {% for tag in recipe.tags.all %}
-                        <a href="{% url "recipes:tag" tag.slug %}">
+                        <a href="{% url 'recipes:tag' tag.slug %}">
                             {{ tag.name }}
                         </a>, 
                     {% endfor %}

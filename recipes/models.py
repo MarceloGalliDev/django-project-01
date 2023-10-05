@@ -9,7 +9,7 @@ from django.db.models import F
 from django.db.models import Value
 from django.db.models.functions import Concat
 
-from django.contrib.contenttypes.fields import GenericRelation
+# from django.contrib.contenttypes.fields import GenericRelation
 from tag.models import Tag
 
 
@@ -17,17 +17,16 @@ from tag.models import Tag
 # vamos subscrever ou criar nosso próprios manager
 
 class RecipeManager(models.Manager):
-    # exemplo
     def get_published(self):
         return self.filter(
             is_published=True
         ).annotate(
-        author_full_name=Concat(
-            F('author__first_name'), Value(' '),
-            F('author__last_name'), Value(' ('),
-            F('author__username'), Value(')'),       
-        )
-    )
+            author_full_name=Concat(
+                F('author__first_name'), Value(' '),
+                F('author__last_name'), Value(' ('),
+                F('author__username'), Value(')'),
+            )
+        ).order_by('-id')
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
@@ -38,6 +37,7 @@ class Category(models.Model):
 
 
 class Recipe(models.Model):
+    objects = RecipeManager()
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)
     # usado para fazer uma espécie de mask na url
@@ -57,7 +57,9 @@ class Recipe(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, default=None)
     # esse campo puxamos diretamente do models User padrão do Django
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    tags = GenericRelation(Tag, related_query_name='recipes')
+    tags = models.ManyToManyField(Tag)
+
+    # tags = GenericRelation(Tag, related_query_name='recipes')
 
     def __str__(self):
         return self.title

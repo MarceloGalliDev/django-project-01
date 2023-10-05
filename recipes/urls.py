@@ -29,8 +29,8 @@ urlpatterns = [
     # <slug:slug> slug direita é o nome do parametro
     # slug vem da busca com kwargs
     path(
-        'recipes/tags/<slug:slug/',
-        views.RecipeListViewTag.as_view(), 
+        'recipes/tags/<slug:slug>/',
+        views.RecipeListViewTag.as_view(),
         name="tag"
     ),
     path(
